@@ -100,6 +100,9 @@ template <typename Dtype>
 void InnerProductLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
     const vector<bool>& propagate_down,
     const vector<Blob<Dtype>*>& bottom) {
+   
+//这个param_propagate_down_应该是layer类的一个变量，跟参数blob的数量相同，
+//表示参数是否更新
   if (this->param_propagate_down_[0]) {
     const Dtype* top_diff = top[0]->cpu_diff();
     const Dtype* bottom_data = bottom[0]->cpu_data();
@@ -123,6 +126,8 @@ void InnerProductLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
         bias_multiplier_.cpu_data(), (Dtype)1.,
         this->blobs_[1]->mutable_cpu_diff());
   }
+
+//这个propagate_down应该和bottom的数量一样，表示参数从这层往不往下传      
   if (propagate_down[0]) {
     const Dtype* top_diff = top[0]->cpu_diff();
     // Gradient with respect to bottom data
